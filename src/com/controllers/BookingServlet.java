@@ -25,7 +25,7 @@ public class BookingServlet extends HttpServlet {
 		Calendar booking = Calendar.getInstance();
 		out.print("<p>Name of caller is </p> "+name+" <p>and time is <p>"+booking.getTime());
 	
-		/* create a calendar object for time before 9 am  */
+		/* create a calendar object for time before 9 am */
 		   Calendar bf9am = Calendar.getInstance();
 		   
 		   /* set time of bf9am calendar object to be 9 am */
@@ -42,7 +42,7 @@ public class BookingServlet extends HttpServlet {
 		   /* create a calendar object for time of 6pm  */
 		   Calendar bf6pm = Calendar.getInstance();
 		   
-		   /** set time of bf6pm calendar object to be 6pm */
+		   /* set time of bf6pm calendar object to be 6pm */
 		   bf6pm.set(Calendar.HOUR_OF_DAY, 18);
 		   
 		   /* create a calendar object for time of 8pm  */
@@ -89,13 +89,18 @@ public class BookingServlet extends HttpServlet {
 		   
 		   /* Check earliest call back time */
 		   after2hours.getTime() ;
+		   
+		   /*create a callback calendar object with a latest condition of 6 working days */
+		   Calendar latest6days = Calendar.getInstance();
+		   
+		   latest6days.add(Calendar.DAY_OF_WEEK, 6);
 		    
 		   
 		   /* Display office hours on page*/
 		   out.print("<p>Office hours are between: </p> "+bf9am.get(Calendar.HOUR_OF_DAY)+" am <p>and <p>"+bf8pm.get(Calendar.HOUR_OF_DAY)+"<span>pm</span>");
 		   
 		   Date time = booking.getTime();  
-		  if((booking.before(bf9am))&& (booking.after(bf8pm))||(booking.before(DayOfWeek.of(7)))){
+		  if((booking.before(bf9am))&& (booking.after(bf8pm))||(booking.equals(DayOfWeek.of(7)))){
 			 {	
 				 
 				 out.print("<p>Time is out of office hours!</p>");
@@ -106,6 +111,16 @@ public class BookingServlet extends HttpServlet {
 				
 				out.print("<p>we are open</p>");
 				request.getRequestDispatcher("index.html").include(request, response);
+			
+			      if((booking.after(monday)) && (booking.before(monday.plus(3)))){
+			    	  
+			    	  out.print("<p>lines are open until 6 pm</p>");
+			    	  out.print("<p>You will get a callback on or after </p>"+ after2hours.getTime());    	  
+			    	  out.print("<p>The latest time for a callback will be </p>"+ latest6days.getTime()); 
+					  request.getRequestDispatcher("index.html").include(request, response);
+			    	  
+			      }
+			    
 			} 
 	}
 
